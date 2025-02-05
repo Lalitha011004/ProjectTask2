@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USERNAME = credentials('docker-username')
-        DOCKER_PASSWORD = credentials('docker-password')  // Ensure 'docker-password' is correct
-        IMAGE_NAME = "ar8888/react-capstone"
+        DOCKER_USERNAME = credentials('lalithambigai011004')
+        DOCKER_PASSWORD = credentials('Lali_0121')  
+        IMAGE_NAME = "Ecomerrence/lali"
     }
 
     stages {
