@@ -9,7 +9,7 @@ pipeline {
 
                 // Build the Docker image using the build script
                 sh './deploy.sh'
-
+            }
                 
             }
         }
