@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USERNAME = credentials('docker-username')  // Store in Jenkins Credentials
-        DOCKER_PASSWORD = credentials('docker-password')
+        DOCKER_USERNAME = credentials('docker-username')
+        DOCKER_PASSWORD = credentials('docker-password')  // Ensure 'docker-password' is correct
         IMAGE_NAME = "ar8888/react-capstone"
     }
 
@@ -11,10 +11,7 @@ pipeline {
         stage('Build and Push Docker Image') {
             steps {
                 script {
-                    // Grant executable permission to deploy script
-                    sh 'chmod +x deploy.sh'
-
-                    // Execute deploy script
+                    // Build, tag, and push Docker image
                     sh './deploy.sh'
                 }
             }
