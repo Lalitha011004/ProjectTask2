@@ -9,7 +9,11 @@ chmod +x build.sh
 # Run the build script
 ./build.sh
 
-# Log in securely using Jenkins credentials
+# Debugging: Ensure environment variables are set
+echo "DOCKER_USERNAME: lalithambigai011004"
+echo "DOCKER_PASSWORD: Lali_0121"
+
+# Log in securely using Docker credentials
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 # Tag and push the image
