@@ -29,7 +29,7 @@ pipeline {
                 sh 'chmod +x deploy.sh build.sh'
 
                 // Use Docker credentials to log in
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'lalithambigai011004', passwordVariable: 'Lali_0121')]) {
                     sh './deploy.sh'
                 }
             }
