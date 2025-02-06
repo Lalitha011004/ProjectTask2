@@ -6,10 +6,10 @@ echo "🔹 Running Deploy Script"
 # Ensure build.sh is executable
 chmod +x build.sh
 
-# Run build script
+# Run the build script
 ./build.sh
 
-# Log in securely (use Jenkins credentials instead)
+# Log in securely using Jenkins credentials
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 # Tag and push the image
