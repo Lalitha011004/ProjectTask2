@@ -1,59 +1,38 @@
-pipeline {
-    agent any
+#!/bin/bash
+set -e  # Exit on error
 
-    environment {
-        DOCKER_IMAGE = 'lalithambigai011004/task2'
-    }
+echo "🔹 Running Deploy Script"
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Lalitha011004/ProjectTask2.git'
-            }
-        }
+# Ensure build.sh is executable
+chmod +x build.sh
 
-        stage('Build and Push Docker Image') {
-            steps {
-                // Ensure dos2unix is available
-                sh '''
-                if ! command -v dos2unix &> /dev/null; then
-                    echo "🔹 Installing dos2unix..."
-                    sudo apt update && sudo apt install -y dos2unix
-                fi
-                '''
+# Run the build script
+./build.sh
 
-                // Convert files to Unix format
-                sh 'dos2unix deploy.sh build.sh Dockerfile docker-compose.yml'
+# Stop and remove the existing container if it exists
+if [ "$(docker ps -aq -f name=task2_container)" ]; then
+    echo "🛑 Stopping and removing existing container 'task2_container'..."
+    docker stop task2_container || true
+    docker rm -f task2_container || true
+else
+    echo "✅ No existing container 'task2_container' found."
+fi
 
-                // Make scripts executable
-                sh 'chmod +x deploy.sh build.sh'
+# Debugging: Ensure credentials are available
+echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+if [ -z "$DOCKER_PASSWORD" ]; then
+    echo "❌ ERROR: DOCKER_PASSWORD is empty!"
+    exit 1
+fi
 
-                // Use Docker credentials to log in
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'lalithambigai011004', passwordVariable: 'Lali_0121')]) {
-                    sh './deploy.sh'
-                }
-            }
-        }
+# Log in securely using Docker credentials
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-        stage('Deploy Container') {
-            steps {
-                script {
-                    if (fileExists('docker-compose.yml')) {
-                        sh 'docker-compose up -d'
-                    } else {
-                        error("⚠️ docker-compose.yml not found!")
-                    }
-                }
-            }
-        }
-    }
+# Tag and push the image
+docker tag lalithambigai011004/task2 lalithambigai011004/day2task2
+docker push lalithambigai011004/day2task2
 
-    post {
-        failure {
-            echo "❌ Build failed. Check logs."
-        }
-        success {
-            echo "🚀 Deployment successful!"
-        }
-    }
-}
+# Run the container with the new image
+docker run -d -p 8085:80 --name task2_container lalithambigai011004/task2
+
+echo "✅ Docker image pushed and container started successfully!"
