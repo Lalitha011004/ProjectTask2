@@ -10,6 +10,6 @@ docker build -t lalithambigai011004/task2 .
 docker images
 
 # Run the container
-docker run -d -p 8085:80 --name task2_container lalithambigai011004/task2
+docker run -d -p 8085:80 --name task2test lalithambigai011004/task2
 
 echo "✅ Container started successfully!"
