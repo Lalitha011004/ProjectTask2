@@ -10,11 +10,12 @@ chmod +x build.sh
 ./build.sh
 
 # Stop and remove the existing container if it exists
-echo "🔹 Checking if 'task2_container' exists..."
-
-# Check if the container exists, and remove it if it does
-docker ps -a --filter "name=task2_container" --format '{{.ID}}' | xargs -r docker stop
-docker ps -a --filter "name=task2_container" --format '{{.ID}}' | xargs -r docker rm
+if docker ps -a --format '{{.Names}}' | grep -q '^task2_container$'; then
+    echo "🛑 Stopping and removing existing container 'task2_container'..."
+    docker stop task2_container && docker rm task2_container
+else
+    echo "✅ No existing container 'task2_container' found."
+fi
 
 # Log in securely using Docker credentials
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
