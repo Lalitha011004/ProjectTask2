@@ -25,6 +25,6 @@ docker tag lalithambigai011004/task2 lalithambigai011004/day2task2
 docker push lalithambigai011004/day2task2
 
 # Run the container with the new image
-docker run -d -p 8085:80 --name task2_container lalithambigai011004/task2
+docker run -d -p 8085:80 --name task2test lalithambigai011004/task2
 
 echo "✅ Docker image pushed and container started successfully!"
