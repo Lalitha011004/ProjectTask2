@@ -1,4 +1,4 @@
 #!/bin/bash
-docker build -t test .
+docker build -t demo .
 docker image
 docker run
