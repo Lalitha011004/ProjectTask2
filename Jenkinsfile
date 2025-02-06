@@ -14,6 +14,14 @@ pipeline {
 
         stage('Build and Push Docker Image') {
             steps {
+                // Check if dos2unix is installed, if not, install it
+                sh '''
+                if ! command -v dos2unix &> /dev/null; then
+                    echo "🔹 Installing dos2unix..."
+                    sudo apt update && sudo apt install -y dos2unix
+                fi
+                '''
+
                 sh 'dos2unix deploy.sh build.sh Dockerfile docker-compose.yml'
                 sh 'chmod +x deploy.sh build.sh'
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
